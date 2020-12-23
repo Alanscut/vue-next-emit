@@ -1,0 +1,75 @@
+<script src="https://unpkg.com/vue@3.0.4"></script>
+<!-- Child component template -->
+<script type="text/x-template" id="child-template">
+  <div class="hello">
+    <h1>{{ msg }}</h1>
+  </div>
+</script>
+
+<div id="demo">
+  <img alt="Vue logo" src="../src/assets/logo.png" />
+  <div>value1: {{ value1 }}</div>
+  <child msg="Hello Vue 3 in CodeSandbox!" @set-value="handleSetValue" />
+</div>
+
+<script>
+  const {
+    createApp,
+    ref,
+    computed
+  } = Vue
+  const Child = {
+    name: 'Child',
+    template: '#child-template',
+    props: {
+      msg: String,
+    },
+    setup(props, {
+      emit
+    }) {
+      emit('set-value', 456)
+    }
+  }
+
+  createApp({
+    name: "App",
+
+    setup() {
+      const value1 = ref(123);
+
+      const handleSetValue = (val) => {
+        console.log('### handler has been triggered.');
+        value1.value = val;
+      };
+
+      return {
+        value1,
+        handleSetValue,
+      };
+    },
+    components: {
+      Child,
+    }
+  }).mount('#demo')
+</script>
+
+<style>
+  #demo {
+    font-family: 'Helvetica', Arial, sans-serif;
+  }
+
+  a {
+    text-decoration: none;
+    color: #f66;
+  }
+
+  li {
+    line-height: 1.5em;
+    margin-bottom: 20px;
+  }
+
+  .author,
+  .date {
+    font-weight: bold;
+  }
+</style>
